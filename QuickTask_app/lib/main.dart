@@ -12,8 +12,9 @@ void main() async {
   await Parse().initialize(keyApplicationId, keyParseServerUrl,
       clientKey: keyClientKey, debug: true);
 
+  final currentUser = await ParseUser.currentUser();
   runApp(MaterialApp(
-    home: const LoginPage(),
+    home: currentUser == null ? const LoginPage() : const LoginPage(),
     theme: ThemeData(
       primaryColor: Colors.indigo, // Updated primary color
       hintColor: Colors.deepOrange, // Updated accent color
