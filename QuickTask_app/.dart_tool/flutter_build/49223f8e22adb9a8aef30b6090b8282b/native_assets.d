@@ -1,0 +1,1 @@
+ D:\\GitHub\\CPAD_Assignment_2023mt93245\\QuickTask_app\\.dart_tool\\flutter_build\\49223f8e22adb9a8aef30b6090b8282b\\native_assets.yaml: 
