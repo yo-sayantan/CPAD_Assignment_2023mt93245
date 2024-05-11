@@ -1,2 +1,2 @@
-# CPAD_Assignment_2023mt93245
-QuickTask Pro application based on Flutter, Dart and Back4App
+# QuickTask
+ A demo quick task application called QuickTask Pro, based on Flutter, Dart & back4App built on Android Studio
