@@ -16,9 +16,9 @@ void main() async {
   runApp(MaterialApp(
     home: currentUser == null ? const LoginPage() : const LoginPage(),
     theme: ThemeData(
-      primaryColor: Colors.indigo, // Updated primary color
-      hintColor: Colors.deepOrange, // Updated accent color
-      scaffoldBackgroundColor: Colors.grey[200], // Updated scaffold background color
+      primaryColor: Colors.indigo,
+      hintColor: Colors.deepOrange,
+      scaffoldBackgroundColor: Colors.grey[200],
       // hintColor: Colors.teal,
       fontFamily: 'Montserrat',
     ),
@@ -43,15 +43,13 @@ class _HomeState extends State<Home> {
       ));
       return;
     }
-    // Show date picker
     final selectedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime.now(),
       lastDate: DateTime(2100),
     );
-    if (selectedDate == null) return; // User canceled date selection
-    // Save todo with target date
+    if (selectedDate == null) return;
     await saveTodo(todoController.text, selectedDate);
     setState(() {
       todoController.clear();
@@ -59,7 +57,6 @@ class _HomeState extends State<Home> {
   }
 
   void logout() {
-    // Redirect to the login page upon logout
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => LoginPage()),
@@ -86,9 +83,9 @@ class _HomeState extends State<Home> {
             child: const Text(
               'Logout',
               style: TextStyle(
-                color: Colors.white, // Change the text color
-                fontSize: 16, // Change the font size
-                fontWeight: FontWeight.bold, // Apply bold font weight
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
               ),
             ),
           ),
@@ -97,7 +94,7 @@ class _HomeState extends State<Home> {
       body: Column(
         children: <Widget>[
           Container(
-            color: Colors.white.withOpacity(0.8), // Set the color and opacity
+            color: Colors.white.withOpacity(0.8),
             child: Padding(
               padding: const EdgeInsets.all(12.0),
               child: Row(
@@ -169,7 +166,7 @@ class _HomeState extends State<Home> {
                           return ListTile(
                             title: Text(varTitle),
                             subtitle: varTargetDate != null
-                                ? Text('Due: ${DateFormat('dd-MMM-yyyy').format(varTargetDate)}') // Format date as MM/dd/yyyy
+                                ? Text('Due: ${DateFormat('dd-MMM-yyyy').format(varTargetDate)}')
                                 : null,
                             leading: CircleAvatar(
                               backgroundColor:
@@ -216,12 +213,11 @@ class _HomeState extends State<Home> {
   }
 
   Future<void> saveTodo(String title, DateTime targetDate) async {
-    // Extract date part from the DateTime object
     final todoDate = DateTime(targetDate.year, targetDate.month, targetDate.day);
     final todo = ParseObject('Todo')
       ..set('title', title)
       ..set('done', false)
-      ..set('targetDate', todoDate); // Save only the date part
+      ..set('targetDate', todoDate);
     await todo.save();
   }
 
