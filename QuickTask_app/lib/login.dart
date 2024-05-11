@@ -1,5 +1,7 @@
-import 'dart:async';
+// login.dart
+
 import 'package:flutter/material.dart';
+import 'package:flutter_parse/signup.dart'; // Import the SignUpPage file
 import 'package:flutter_parse/main.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 
@@ -88,9 +90,9 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [Colors.blue, Colors.teal],
@@ -166,6 +168,23 @@ class _LoginPageState extends State<LoginPage> {
                           'Login',
                           style: TextStyle(
                             fontSize: 20,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20.0),
+                      const Text('Do not have an account ?   '),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => SignUpPage()),
+                          );
+                        },
+                        child: const Text(
+                          'Sign Up',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),

@@ -134,7 +134,6 @@ class _HomeState extends State<Home> {
             ),
           ),
           Expanded(
-
             child: FutureBuilder<List<ParseObject>>(
               future: getTodo(),
               builder: (context, snapshot) {
@@ -155,6 +154,30 @@ class _HomeState extends State<Home> {
                         child: Text("No Data..."),
                       );
                     } else {
+                      // Sort the list based on targetDate and completion status
+                      snapshot.data!.sort((a, b) {
+                        final DateTime? dateA = a.get<DateTime>('targetDate');
+                        final DateTime? dateB = b.get<DateTime>('targetDate');
+                        final bool doneA = a.get<bool>('done') ?? false;
+                        final bool doneB = b.get<bool>('done') ?? false;
+
+                        // Incomplete tasks should come before completed tasks
+                        if (!doneA && doneB) {
+                          return -1;
+                        } else if (doneA && !doneB) {
+                          return 1;
+                        }
+
+                        // Sort by targetDate if both tasks have the same completion status
+                        if (dateA == null && dateB == null) {
+                          return 0;
+                        } else if (dateA == null) {
+                          return 1;
+                        } else if (dateB == null) {
+                          return -1;
+                        }
+                        return dateA.compareTo(dateB);
+                      });
                       return ListView.builder(
                         padding: EdgeInsets.all(16),
                         itemCount: snapshot.data!.length,
@@ -214,23 +237,32 @@ class _HomeState extends State<Home> {
 
   Future<void> saveTodo(String title, DateTime targetDate) async {
     final todoDate = DateTime(targetDate.year, targetDate.month, targetDate.day);
-    final todo = ParseObject('Todo')
-      ..set('title', title)
-      ..set('done', false)
-      ..set('targetDate', todoDate);
-    await todo.save();
+    final currentUser = await ParseUser.currentUser();
+    final userId = currentUser?.objectId;
+    if (userId != null) {
+      final todo = ParseObject('Todo')
+        ..set('title', title)
+        ..set('done', false)
+        ..set('targetDate', todoDate)
+        ..set('userId', userId);
+      await todo.save();
+    }
   }
 
   Future<List<ParseObject>> getTodo() async {
-    QueryBuilder<ParseObject> queryTodo =
-    QueryBuilder<ParseObject>(ParseObject('Todo'));
-    final ParseResponse apiResponse = await queryTodo.query();
+    final currentUser = await ParseUser.currentUser();
+    final userId = currentUser?.objectId;
+    if (userId != null) {
+      QueryBuilder<ParseObject> queryTodo =
+      QueryBuilder<ParseObject>(ParseObject('Todo'))
+        ..whereEqualTo('userId', userId);
+      final ParseResponse apiResponse = await queryTodo.query();
 
-    if (apiResponse.success && apiResponse.results != null) {
-      return apiResponse.results as List<ParseObject>;
-    } else {
-      return [];
+      if (apiResponse.success && apiResponse.results != null) {
+        return apiResponse.results as List<ParseObject>;
+      }
     }
+    return [];
   }
 
   Future<void> updateTodo(String id, bool done) async {
