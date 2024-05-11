@@ -1,0 +1,1 @@
+ D:\\GitHub\\quicktask\\.dart_tool\\flutter_build\\c5adcea3d2716c4afe33850b8042d2e4\\native_assets.yaml: 
