@@ -73,9 +73,10 @@ class _HomeState extends State<Home> {
             fontSize: 22,
             fontWeight: FontWeight.bold,
             color: Colors.white,
+            // align: left,
           ),
         ),
-        centerTitle: true,
+        centerTitle: false,
         backgroundColor: Colors.blueAccent,
         actions: <Widget>[
           TextButton(
